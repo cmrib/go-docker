@@ -1,5 +1,14 @@
+FROM golang:alpine AS builder
+
+WORKDIR /app
+
+COPY go.mod .
+COPY main.go .
+
+RUN go build -o main .
+
 FROM scratch
 
-COPY main /main
+COPY --from=builder /app/main /main
 
 ENTRYPOINT ["/main"]
